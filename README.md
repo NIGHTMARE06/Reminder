@@ -4,4 +4,4 @@ Este es un programa escrito en java en donde puedes crear notas, añadir fechas 
 
 Esta diseñado para funcionar en linux pero se puede adaptar facilmente editando el archivo Notas.java dentro del codigo fuente(src).
 
-Los archivos estan organizados asi por que fueron hechos en Netbeans :D
+Disfrutenlo ;D
