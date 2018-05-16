@@ -1,15 +1,14 @@
-package reminder;
+package functions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import extra.Constantes;
 
 /**
  *
@@ -40,10 +39,10 @@ public class Notas {
     
     public void crearNota() throws IOException {
         if(!titulo.equals("")) {
-            ruta = "/home/n1ght_m4re/REMINDER/" + titulo + ".txt";
+            ruta = Constantes.ReminderPath + titulo + ".txt";
         } else {
             System.out.println("Cada nota necesita un titulo o nombre.");
-            ruta = "/home/n1ght_m4re/REMINDER/SinNombre.txt";
+            ruta = Constantes.ReminderPath + "SinNombre.txt";
         }
         
         File file = new File(ruta);
@@ -67,7 +66,7 @@ public class Notas {
         panelDerecho = PANEL_DERECHO;
         title = TITLE;
         
-        dir = new File("/home/n1ght_m4re/REMINDER");
+        dir = new File(Constantes.ReminderPath);
         paths = dir.listFiles();
         textos = new String[paths.length];
         botones = new JButton[paths.length];
@@ -95,7 +94,7 @@ public class Notas {
 //                    title.setText(nombres[n].replace(".txt",""));
 //                    leerArchivo(nombres[n]);
                     try {
-                        FileReader fr = new FileReader("/home/n1ght_m4re/REMINDER/" + nombres[n]);
+                        FileReader fr = new FileReader(Constantes.ReminderPath + nombres[n]);
                         BufferedReader br = new BufferedReader(fr);
                         String temp = "";
                             
@@ -123,7 +122,7 @@ public class Notas {
             JOptionPane.DEFAULT_OPTION,null,nombres,nombres[0]
         );
         
-        File archivoE = new File("/home/n1ght_m4re/REMINDER/" + ne);
+        File archivoE = new File(Constantes.ReminderPath + ne);
         archivoE.delete();
         title.setText("");
         jtx.setText("");
@@ -132,7 +131,7 @@ public class Notas {
     
     public void leerArchivo(String a) {
         try {
-            FileReader fr = new FileReader("/home/n1ght_m4re/REMINDER/" + a);
+            FileReader fr = new FileReader(Constantes.ReminderPath + a);
             BufferedReader br = new BufferedReader(fr);
             String temp = "";
             

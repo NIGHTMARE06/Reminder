@@ -1,5 +1,7 @@
-package reminder;
+package main;
 
+import extra.Constantes;
+import functions.Notas;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Font;
@@ -7,10 +9,10 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JFrame;
 import java.io.*;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -39,7 +41,7 @@ public class Ventana extends JFrame implements ActionListener {
         pack();
         setSize(800,550);
         setLocationRelativeTo(null);
-        setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("../img/NotaIcon.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource(Constantes.IconPath)));
         directorio();
     }
     
@@ -99,7 +101,7 @@ public class Ventana extends JFrame implements ActionListener {
     }
     
     public void directorio() {
-        File folder = new File("/home/n1ght_m4re/REMINDER");
+        File folder = new File(Constantes.ReminderPath);
         if(!folder.exists()) {
             folder.mkdir();
         }
