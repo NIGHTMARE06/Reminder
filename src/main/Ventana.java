@@ -10,7 +10,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,13 +17,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import nicon.notify.core.Notification;
 
 /**
  *
  * @author n1ght_m4re
  */
 public class Ventana extends JFrame implements ActionListener {
-    JPanel panelSuperior,panelDerecho,panelCentral;
+    JPanel panelSuperior,panelCentral;
     JButton guardar = new JButton("GUARDAR");
     JButton nuevo = new JButton("NUEVO");
     JButton eliminar = new JButton("ELIMINAR");
@@ -53,7 +53,7 @@ public class Ventana extends JFrame implements ActionListener {
         contenedor.setLayout(new BorderLayout(4,4));
         
         contenedor.add(panelSuperior,BorderLayout.NORTH);
-        contenedor.add(panelDerecho,BorderLayout.EAST);
+        contenedor.add(Constantes.paneles.panelDerecho,BorderLayout.EAST);
         contenedor.add(panelCentral,BorderLayout.CENTER);
     }
     
@@ -86,8 +86,7 @@ public class Ventana extends JFrame implements ActionListener {
     }
     
     public void panelDerecho() {
-        panelDerecho = new JPanel();
-        panelDerecho.setLayout(new BoxLayout(panelDerecho,BoxLayout.Y_AXIS));
+        Constantes.paneles.createPanelDerecho();
     }
     
     public void panelCentral() {
@@ -113,31 +112,32 @@ public class Ventana extends JFrame implements ActionListener {
         
         if(e.getSource() == guardar) {
             try {
+                //if(notas.leerNota(texto.getText()) != null) {
+                    
+                //}
                 notas.crearNota();
-            } catch(IOException ex) {
-                
-            }
+            } catch(IOException ex) {}
         }
         
         try {
-            notas.btnPanelDerecho(titulo,texto,panelDerecho);
-        } catch (IOException ex) {
-            System.out.println("No se ha podido mostrar tus notas.");
+            Constantes.paneles.btnPanelDerecho(titulo,texto);
+        } catch(IOException ex) {
+            Notification.desktopMessage("Reminder","No se ha podido mostrar tus notas.",2);
         }
         panelCentral.updateUI();
-        panelDerecho.updateUI();
+        Constantes.paneles.updatePanelDerecho();
         
         if(e.getSource() == nuevo) {
             titulo.setText("");
             hora.setText("");
             fecha.setText("");
-            texto.setText("");
+            texto.setText("~Ingresa aqui tu nota~");
         }
         
         if(e.getSource() == eliminar) {
             notas.borrarNota(titulo,texto);
             panelCentral.updateUI();
-            panelDerecho.updateUI();
+            Constantes.paneles.updatePanelDerecho();
         }
     }
 }
