@@ -3,11 +3,10 @@ package functions;
 import extra.Constantes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.util.regex.Pattern;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -24,7 +23,7 @@ public class Paneles {
     File[] paths;
     File dir = null;
     String[] textos;
-    JTextField title;
+    JTextField titulo,hora,fecha;;
     String[] nombres;
     JButton[] botones;
     
@@ -36,10 +35,12 @@ public class Paneles {
         panelDerecho.setLayout(new BoxLayout(panelDerecho,BoxLayout.Y_AXIS));
     }
     
-    public void btnPanelDerecho(JTextField title, JTextArea jtx) throws FileNotFoundException, IOException {
+    public void btnPanelDerecho(JTextField titulo,JTextField hora,JTextField fecha,JTextArea jtx) throws FileNotFoundException, IOException {
         int num = 0;
         this.jtx = jtx;
-        this.title = title;
+        this.titulo = titulo;
+        this.hora = hora;
+        this.fecha = fecha;
         
         dir = new File(Constantes.ReminderPath);
         paths = dir.listFiles();
@@ -55,16 +56,34 @@ public class Paneles {
         
         for(int i = 0; i < num; i++) {
             int n = i;
-            String nombre = nombres[i].replace(".txt","");
+            
+            /*if(nombres[i].contains("+")) {
+                info = nombres[i].split(Pattern.quote("+"));
+                nombre = info[0];
+            } else {
+                nombre = nombres[i].replace(".txt","");
+            }*/
+            String[] info = nombres[i].split(Pattern.quote("+"));
+            String nombre = info[0].replace(".txt","");
+            
             botones[i] = new JButton(nombre);
             
             botones[i].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     jtx.setText("");
-                    title.setText(nombre);
                     
-                    jtx.append(getTextNota(nombres[n]));
+                    titulo.setText(nombre);
+                    
+                    if(info.length > 1) {
+                        hora.setText(info[1]);
+                        fecha.setText(info[2]);
+                    } else {
+                        hora.setText("");
+                        fecha.setText("");
+                    }
+                    
+                    jtx.append(Constantes.notas.getTextNota(nombres[n]));
                 }
             });
             
@@ -74,27 +93,5 @@ public class Paneles {
     
     public void updatePanelDerecho() {
         panelDerecho.updateUI();
-    }
-    
-    public String getTextNota(String file) {
-        String text = "";
-        
-        try {
-            FileReader fr = new FileReader(Constantes.ReminderPath + file);
-            BufferedReader br = new BufferedReader(fr);
-            String temp = "";
-
-            while(temp != null) {
-                temp = br.readLine();
-                if(temp == null) {
-                    break;
-                }
-                text += temp + "\n";
-            }
-        } catch(IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-        
-        return text;
     }
 }

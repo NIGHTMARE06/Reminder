@@ -10,6 +10,9 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,6 +35,8 @@ public class Ventana extends JFrame implements ActionListener {
     JTextField fecha,hora,titulo;
     JTextArea texto = new JTextArea(10,20);
     JScrollPane scroll = new JScrollPane(texto);
+    String templateHora = "";
+    String templateFecha = "";
     int n;
     
     public Ventana() {
@@ -39,10 +44,20 @@ public class Ventana extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         iniciarComponentes(this.getContentPane());
         pack();
-        setSize(800,550);
+        setSize(900,550);
+        setResizable(false);
         setLocationRelativeTo(null);
         setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource(Constantes.IconPath)));
         directorio();
+        
+        String name = "example+12:30:14+12-04-18+.txt";
+        System.out.println("IndexOf: " + name.indexOf("+"));
+        System.out.println("Hora: " + name.substring(name.indexOf("+")+1,name.indexOf("+")+9));
+        System.out.println("Fecha: " + name.substring(name.indexOf("+")+10,name.indexOf(".")-1));
+        
+        Date date = new Date();
+        DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss dd-MM-yy");
+        System.out.println("HorafechaConDateFormat: " + hourFormat.format(date));
     }
     
     public void iniciarComponentes(Container contenedor) {
@@ -108,22 +123,20 @@ public class Ventana extends JFrame implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        Notas notas = new Notas(texto.getText(),titulo.getText(),hora.getText(),fecha.getText());
+        Constantes.notas = new Notas(texto.getText(),titulo,hora,fecha);
         
         if(e.getSource() == guardar) {
             try {
-                //if(notas.leerNota(texto.getText()) != null) {
-                    
-                //}
-                notas.crearNota();
+                Constantes.notas.crearNota();
             } catch(IOException ex) {}
         }
         
         try {
-            Constantes.paneles.btnPanelDerecho(titulo,texto);
+            Constantes.paneles.btnPanelDerecho(titulo,hora,fecha,texto);
         } catch(IOException ex) {
             Notification.desktopMessage("Reminder","No se ha podido mostrar tus notas.",2);
         }
+        
         panelCentral.updateUI();
         Constantes.paneles.updatePanelDerecho();
         
@@ -135,7 +148,7 @@ public class Ventana extends JFrame implements ActionListener {
         }
         
         if(e.getSource() == eliminar) {
-            notas.borrarNota(titulo,texto);
+            Constantes.notas.borrarNota(titulo,texto);
             panelCentral.updateUI();
             Constantes.paneles.updatePanelDerecho();
         }
