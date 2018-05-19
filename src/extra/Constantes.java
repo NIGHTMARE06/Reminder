@@ -1,7 +1,7 @@
 package extra;
 
-import functions.Notas;
-import functions.Paneles;
+import notes.Notas;
+import notes.Paneles;
 
 /**
  *

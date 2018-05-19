@@ -1,4 +1,4 @@
-package functions;
+package notes;
 
 import extra.Constantes;
 import java.io.*;
@@ -19,7 +19,6 @@ public class Notas {
     JTextField title;
     BufferedWriter bw;
     BufferedReader br;
-    File archivo;
     FileReader fr;
     JButton[] botones;
     
@@ -39,9 +38,14 @@ public class Notas {
             }
             
             File file = new File(ruta);
+        
             if(!file.exists()) {
                 file.createNewFile();
-                System.out.println("El archivo se creo :D");
+                Notification.desktopMessage("Reminder","Tu nota ha sido creada :P",3);
+            } else {
+                file.delete();
+                file.createNewFile();
+                Notification.desktopMessage("Reminder","Esta nota ha sido actualizada C:",3);
             }
 
             bw = new BufferedWriter(new FileWriter(file));
@@ -83,15 +87,10 @@ public class Notas {
         }
         
         try {
-            Constantes.paneles.updatePanelDerecho();
             Constantes.paneles.btnPanelDerecho(this.title,hora,fecha,this.jtx);
         } catch(IOException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
-    }
-    
-    public void actualizarNota() {
-        
     }
     
     public String getTextNota(String file) {
